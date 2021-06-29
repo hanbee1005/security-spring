@@ -1,5 +1,6 @@
 package com.example.securityspring.service;
 
+import com.example.securityspring.dto.JwtRequestDto;
 import com.example.securityspring.dto.MemberSignupRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,21 @@ class AuthServiceTest {
 
     @Autowired
     AuthService authService;
+
+    @Test
+    @DisplayName("로그인")
+    void login() throws Exception {
+        // Given
+        JwtRequestDto request = new JwtRequestDto();
+        request.setEmail("test@gmail.com");
+        request.setPassword("123");
+
+        // When
+        String email = authService.login(request);
+
+        // Then
+        assertThat(email).isEqualTo(request.getEmail());
+    }
 
     @Test
     @DisplayName("회원가입")
