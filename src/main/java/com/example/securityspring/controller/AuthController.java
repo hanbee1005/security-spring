@@ -19,7 +19,12 @@ public class AuthController {
 
     @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
     public String login(@RequestBody JwtRequestDto request) {
-        return "login";
+
+        try {
+            return authService.login(request);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
     @PostMapping(value = "signup", produces = MediaType.APPLICATION_JSON_VALUE)

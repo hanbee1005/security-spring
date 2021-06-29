@@ -1,5 +1,6 @@
 package com.example.securityspring.controller;
 
+import com.example.securityspring.dto.JwtRequestDto;
 import com.example.securityspring.dto.MemberSignupRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +27,22 @@ class AuthControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Test
+    @DisplayName("로그인")
+    void login() throws Exception {
+        // Given
+        JwtRequestDto request = new JwtRequestDto();
+        request.setEmail("test@gmail.com");
+        request.setPassword("123");
+
+        // When
+        mockMvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print());
+    }
 
     @Test
     @DisplayName("회원가입")
