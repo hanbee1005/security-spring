@@ -14,3 +14,8 @@ logging:
         type:
           descriptor:
             sql: trace
+
+# JWT
+jwt:
+  secret: YOUR_SECRET_KEY
+  access-expired: 1800 # 30(분) - 단위 (초)
