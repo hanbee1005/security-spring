@@ -1,7 +1,9 @@
 package com.example.securityspring.service;
 
 import com.example.securityspring.dto.JwtRequestDto;
+import com.example.securityspring.dto.JwtResponseDto;
 import com.example.securityspring.dto.MemberSignupRequestDto;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class AuthServiceTest {
@@ -28,10 +31,10 @@ class AuthServiceTest {
         request.setPassword("123");
 
         // When
-        String email = authService.login(request);
+        JwtResponseDto token = authService.login(request);
 
         // Then
-        assertThat(email).isEqualTo(request.getEmail());
+        log.info(token.getAccessToken());
     }
 
     @Test

@@ -2,8 +2,10 @@ package com.example.securityspring.service;
 
 import com.example.securityspring.domain.Member;
 import com.example.securityspring.dto.JwtRequestDto;
+import com.example.securityspring.dto.JwtResponseDto;
 import com.example.securityspring.dto.MemberSignupRequestDto;
 import com.example.securityspring.repository.MemberRepository;
+import com.example.securityspring.security.JwtTokenProvider;
 import com.example.securityspring.security.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,15 +25,19 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public String login(JwtRequestDto request) throws Exception {
+    public JwtResponseDto login(JwtRequestDto request) throws Exception {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return createJwtToken(authentication);
+    }
 
+    private JwtResponseDto createJwtToken(Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        return principal.getUsername();
+        String token = jwtTokenProvider.generateToken(principal);
+        return new JwtResponseDto(token);
     }
 
     public String signup(MemberSignupRequestDto request) {

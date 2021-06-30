@@ -1,6 +1,7 @@
 package com.example.securityspring.controller;
 
 import com.example.securityspring.dto.JwtRequestDto;
+import com.example.securityspring.dto.JwtResponseDto;
 import com.example.securityspring.dto.MemberSignupRequestDto;
 import com.example.securityspring.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -18,12 +19,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String login(@RequestBody JwtRequestDto request) {
+    public JwtResponseDto login(@RequestBody JwtRequestDto request) {
 
         try {
             return authService.login(request);
         } catch (Exception e) {
-            return e.getMessage();
+            return new JwtResponseDto(e.getMessage());
         }
     }
 
